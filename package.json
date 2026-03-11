@@ -1,0 +1,49 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "Simple CRUD API for a Product Catalog using an in-memory database underneath.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "prepare": "simple-git-hooks",
+    "typecheck": "tsc --noEmit",
+    "eslint": "eslint src",
+    "build": "tsc",
+    "start:dev": "tsx watch src/index.ts",
+    "start:prod": "npm run build && node dist/index.js"
+  },
+  "simple-git-hooks": {
+    "pre-commit": [
+      "npm run typecheck",
+      "npm run eslint"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/only1design/node-crud-api.git"
+  },
+  "author": "Volodymyr Bekariev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/only1design/node-crud-api/issues"
+  },
+  "homepage": "https://github.com/only1design/node-crud-api#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "fastify": "^5.8.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^1.1.0",
+    "@types/node": "^25.4.0",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.4.0",
+    "jiti": "^2.6.1",
+    "prettier": "3.8.1",
+    "simple-git-hooks": "^2.13.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0"
+  }
+}
