@@ -1,21 +1,21 @@
 import 'dotenv/config';
-import cluster from 'node:cluster';
 import { setupClusterManager } from './clusters/clusterManager.js';
+import { getAppConfig } from './config/appConfig.js';
 import { getAppServer } from './servers/appServer.js';
 import { getLoadBalancer } from './servers/loadBalancer.js';
 
-const port = Number(process.env.PORT) as number;
+const { port, isPrimaryProcess, isMulti } = getAppConfig();
 
-const getServer = () => {
-  if (cluster.isPrimary && process.env.APP_MODE === 'multi') {
+const getServer = async () => {
+  if (isMulti && isPrimaryProcess) {
     const workerPorts = setupClusterManager(port);
 
-    return getLoadBalancer(workerPorts);
+    return await getLoadBalancer(workerPorts);
   } else {
-    return getAppServer();
+    return await getAppServer();
   }
 };
 
-const server = getServer();
+const server = await getServer();
 
-server.listen({ port });
+await server.listen({ port });

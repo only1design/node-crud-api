@@ -15,10 +15,7 @@
     "start:prod:multi": "npm run build && cross-env APP_MODE=multi node dist/app.js"
   },
   "simple-git-hooks": {
-    "pre-commit": [
-      "npm run typecheck",
-      "npm run eslint"
-    ]
+    "pre-commit": "npm run typecheck && npm run eslint"
   },
   "repository": {
     "type": "git",
@@ -32,6 +29,7 @@
   "homepage": "https://github.com/only1design/node-crud-api#readme",
   "dependencies": {
     "@fastify/reply-from": "^12.6.1",
+    "@fastify/sensible": "^6.0.4",
     "dotenv": "^17.3.1",
     "fastify": "^5.8.2"
   },

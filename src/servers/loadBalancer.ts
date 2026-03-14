@@ -1,11 +1,13 @@
 import fastifyReplyFrom from '@fastify/reply-from';
 import fastify from 'fastify';
+import { appPlugin } from '../plugins/appPlugin.js';
 
-export const getLoadBalancer = (workerPorts: number[]) => {
+export const getLoadBalancer = async (workerPorts: number[]) => {
   let roundRobinPointer = 0;
 
   const loadBalancer = fastify();
 
+  loadBalancer.register(appPlugin);
   loadBalancer.register(fastifyReplyFrom);
 
   loadBalancer.all('*', async (request, reply) => {
