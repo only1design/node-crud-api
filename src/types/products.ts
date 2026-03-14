@@ -8,3 +8,5 @@ export interface IProduct {
 }
 
 export type ICreateProductDto = Omit<IProduct, 'id'>;
+
+export type IUpdateProductDto = Partial<ICreateProductDto>;

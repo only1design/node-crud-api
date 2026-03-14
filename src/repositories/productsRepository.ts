@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { IInMemoryDB } from '../db/inMemoryDB.js';
-import { sendDbQuery } from '../ipc/sendDbQuery.js';
+import { sendDbQuery } from '../ipc/dbQuery.js';
 import { ICreateProductDto, IProduct } from '../types/products.js';
 import { IRepository } from '../types/repository.js';
 

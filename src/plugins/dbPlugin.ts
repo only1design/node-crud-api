@@ -3,7 +3,7 @@ import cluster from 'node:cluster';
 import { getAppConfig } from '../config/appConfig.js';
 import { createInMemoryDB, IInMemoryDB } from '../db/inMemoryDB.js';
 import fastifyPlugin from 'fastify-plugin';
-import { DB_QUERY, handleDbQuery } from '../ipc/sendDbQuery.js';
+import { DB_QUERY, handleDbQuery } from '../ipc/dbQuery.js';
 
 declare module 'fastify' {
   interface FastifyInstance {

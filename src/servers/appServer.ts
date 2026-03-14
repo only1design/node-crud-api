@@ -9,7 +9,9 @@ export const getAppServer = async () => {
   });
 
   appServer.register(appPlugin);
-  appServer.register(fastifySensible);
+  appServer.register(fastifySensible, {
+    sharedSchemaId: 'HttpError',
+  });
   appServer.register(productsController, { prefix: '/api' });
 
   return appServer;
