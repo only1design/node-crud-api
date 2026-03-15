@@ -1,18 +1,16 @@
-import fastifySensible from '@fastify/sensible';
-import fastify from 'fastify';
-import { productsController } from '../controllers/productsController.js';
-import { appPlugin } from '../plugins/appPlugin.js';
+import { setupClusterManager } from '../clusters/clusterManager.js';
+import { getAppConfig } from '../config/appConfig.js';
+import { getLoadBalancer } from './loadBalancer.js';
+import { getRestApi } from './restApi.js';
 
 export const getAppServer = async () => {
-  const appServer = fastify({
-    logger: false,
-  });
+  const { port, isPrimaryProcess, isMulti } = getAppConfig();
 
-  appServer.register(appPlugin);
-  appServer.register(fastifySensible, {
-    sharedSchemaId: 'HttpError',
-  });
-  appServer.register(productsController, { prefix: '/api' });
+  if (isMulti && isPrimaryProcess) {
+    const workerPorts = setupClusterManager(port);
 
-  return appServer;
+    return await getLoadBalancer(workerPorts);
+  } else {
+    return await getRestApi();
+  }
 };

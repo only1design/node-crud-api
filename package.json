@@ -5,14 +5,15 @@
   "main": "src/app.ts",
   "type": "module",
   "scripts": {
-    "prepare": "simple-git-hooks",
-    "typecheck": "tsc --noEmit",
-    "eslint": "eslint src",
     "build": "tsc",
     "start:dev": "tsx watch src/app.ts",
     "start:multi": "cross-env APP_MODE=multi tsx watch src/app.ts",
     "start:prod": "npm run build && node dist/app.js",
-    "start:prod:multi": "npm run build && cross-env APP_MODE=multi node dist/app.js"
+    "start:prod:multi": "npm run build && cross-env APP_MODE=multi node dist/app.js",
+    "test": "tsx --test 'test/**/*.test.ts'",
+    "prepare": "simple-git-hooks",
+    "typecheck": "tsc --noEmit",
+    "eslint": "eslint src"
   },
   "simple-git-hooks": {
     "pre-commit": "npm run typecheck && npm run eslint"
