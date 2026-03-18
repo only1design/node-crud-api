@@ -9,7 +9,7 @@ The app uses an in‑memory data store. It supports two execution modes:
 ## Stack
 - Language: TypeScript
 - Framework: Fastify ^5
-- Utilities: dotenv, @fastify/sensible, @fastify/reply-from, cross-env
+- Utilities: dotenv, @fastify/sensible, @fastify/reply-from, @fastify/swagger, @fastify/swagger-ui, cross-env
 - Tooling: tsx (dev runner and tests), TypeScript, ESLint, Prettier, simple-git-hooks
 - Package manager: npm
 
@@ -19,7 +19,7 @@ The app uses an in‑memory data store. It supports two execution modes:
 - npm
 
 Optional for development:
-- curl or an API client (e.g., Postman) for manual testing
+- Use the built-in Swagger UI or API client (e.g., Postman) for manual testing. 
 
 
 ## Installation
@@ -64,6 +64,9 @@ Notes on multi-process mode:
 - Worker processes are forked on ports `PORT + 1 ... PORT + N`, where `N = availableParallelism()` of the host OS (`src/clusters/clusterManager.ts`).
 - The in-memory DB lives in the primary process; workers access it through a small IPC protocol (`src/ipc/dbQuery.ts`).
 
+## API Documentation
+Interactive Swagger UI is available at `http://localhost:{PORT}/docs` when the server is running.
+
 ## Testing
 - Run all tests:
   ```bash
@@ -71,8 +74,3 @@ Notes on multi-process mode:
   ```
 - Test framework: Node’s built-in `node:test` API executed via `tsx --test`.
 - Test files: see `test/**/*.test.ts` - all the files inside `test` folder with `.test.ts` extension.
-
-## API Overview
-Base URL prefix: `/api`
-
-Validation and error responses are powered by `@fastify/sensible` with a shared schema id `HttpError`.

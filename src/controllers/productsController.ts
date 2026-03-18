@@ -4,7 +4,7 @@ import { ICreateProductDto, IProduct, IUpdateProductDto } from '../types/product
 const productIdParamsSchema = {
   type: 'object',
   properties: {
-    id: { type: 'string', format: 'uuid' },
+    id: { type: 'string', format: 'uuid', example: '550e8400-e29b-41d4-a716-446655440000' },
   },
   required: ['id'],
 };
@@ -12,11 +12,15 @@ const productIdParamsSchema = {
 const createProductBodySchema = {
   type: 'object',
   properties: {
-    name: { type: 'string', minLength: 1 },
-    description: { type: 'string', minLength: 1 },
-    price: { type: 'number', exclusiveMinimum: 0 },
-    category: { type: 'string', minLength: 1 },
-    inStock: { type: 'boolean' },
+    name: { type: 'string', minLength: 1, example: 'Wireless Keyboard' },
+    description: {
+      type: 'string',
+      minLength: 1,
+      example: 'Compact wireless keyboard with Bluetooth 5.0',
+    },
+    price: { type: 'number', exclusiveMinimum: 0, example: 49.99 },
+    category: { type: 'string', minLength: 1, example: 'Electronics' },
+    inStock: { type: 'boolean', example: true },
   },
   required: ['name', 'description', 'price', 'category', 'inStock'],
 };
@@ -29,12 +33,12 @@ const updateProductBodySchema = {
 const productResponseSchema = {
   type: 'object',
   properties: {
-    id: { type: 'string' },
-    name: { type: 'string' },
-    description: { type: 'string' },
-    price: { type: 'number' },
-    category: { type: 'string' },
-    inStock: { type: 'boolean' },
+    id: { type: 'string', example: '550e8400-e29b-41d4-a716-446655440000' },
+    name: { type: 'string', example: 'Wireless Keyboard' },
+    description: { type: 'string', example: 'Compact wireless keyboard with Bluetooth 5.0' },
+    price: { type: 'number', example: 49.99 },
+    category: { type: 'string', example: 'Electronics' },
+    inStock: { type: 'boolean', example: true },
   },
 };
 
@@ -43,8 +47,11 @@ export const productsController = (fastify: FastifyInstance) => {
     '/products',
     {
       schema: {
+        summary: 'List all products',
+        description: 'Returns all products from the catalog.',
         response: {
           200: {
+            description: 'List of products',
             type: 'array',
             items: productResponseSchema,
           },
@@ -63,11 +70,13 @@ export const productsController = (fastify: FastifyInstance) => {
     '/products/:id',
     {
       schema: {
+        summary: 'Get a product by ID',
+        description: 'Returns a single product by its UUID.',
         params: productIdParamsSchema,
         response: {
-          200: productResponseSchema,
-          400: { $ref: 'HttpError' },
-          404: { $ref: 'HttpError' },
+          200: { description: 'The requested product', ...productResponseSchema },
+          400: { description: 'Invalid product ID format', $ref: 'HttpError' },
+          404: { description: 'Product not found', $ref: 'HttpError' },
         },
       },
     },
@@ -90,10 +99,12 @@ export const productsController = (fastify: FastifyInstance) => {
     '/products',
     {
       schema: {
+        summary: 'Create a product',
+        description: 'Adds a new product to the catalog. All fields are required.',
         body: createProductBodySchema,
         response: {
-          201: productResponseSchema,
-          400: { $ref: 'HttpError' },
+          201: { description: 'The created product', ...productResponseSchema },
+          400: { description: 'Validation error', $ref: 'HttpError' },
         },
       },
     },
@@ -112,12 +123,15 @@ export const productsController = (fastify: FastifyInstance) => {
     '/products/:id',
     {
       schema: {
+        summary: 'Update a product',
+        description:
+          'Updates an existing product. All fields are optional — only provided fields will be changed.',
         params: productIdParamsSchema,
         body: updateProductBodySchema,
         response: {
-          200: productResponseSchema,
-          400: { $ref: 'HttpError' },
-          404: { $ref: 'HttpError' },
+          200: { description: 'The updated product', ...productResponseSchema },
+          400: { description: 'Invalid ID format or validation error', $ref: 'HttpError' },
+          404: { description: 'Product not found', $ref: 'HttpError' },
         },
       },
     },
@@ -141,11 +155,13 @@ export const productsController = (fastify: FastifyInstance) => {
     '/products/:id',
     {
       schema: {
+        summary: 'Delete a product',
+        description: 'Removes a product from the catalog by its UUID.',
         params: productIdParamsSchema,
         response: {
-          204: { type: 'null' },
-          400: { $ref: 'HttpError' },
-          404: { $ref: 'HttpError' },
+          204: { description: 'Product deleted successfully', type: 'null' },
+          400: { description: 'Invalid product ID format', $ref: 'HttpError' },
+          404: { description: 'Product not found', $ref: 'HttpError' },
         },
       },
     },
