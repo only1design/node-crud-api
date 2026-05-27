@@ -2,21 +2,21 @@
   "name": "crud-api",
   "version": "1.0.0",
   "description": "Simple CRUD API for a Product Catalog using an in-memory database underneath.",
-  "main": "src/index.js",
+  "main": "src/app.ts",
   "type": "module",
   "scripts": {
+    "build": "tsc",
+    "start:dev": "tsx watch src/app.ts",
+    "start:multi": "cross-env APP_MODE=multi tsx watch src/app.ts",
+    "start:prod": "npm run build && node dist/app.js",
+    "start:prod:multi": "npm run build && cross-env APP_MODE=multi node dist/app.js",
+    "test": "tsx --test \"test/**/*.test.ts\"",
     "prepare": "simple-git-hooks",
     "typecheck": "tsc --noEmit",
-    "eslint": "eslint src",
-    "build": "tsc",
-    "start:dev": "tsx watch src/index.ts",
-    "start:prod": "npm run build && node dist/index.js"
+    "eslint": "eslint src"
   },
   "simple-git-hooks": {
-    "pre-commit": [
-      "npm run typecheck",
-      "npm run eslint"
-    ]
+    "pre-commit": "npm run typecheck && npm run eslint"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,10 @@
   },
   "homepage": "https://github.com/only1design/node-crud-api#readme",
   "dependencies": {
+    "@fastify/reply-from": "^12.6.1",
+    "@fastify/sensible": "^6.0.4",
+    "@fastify/swagger": "^9.7.0",
+    "@fastify/swagger-ui": "^5.2.5",
     "dotenv": "^17.3.1",
     "fastify": "^5.8.2"
   },
@@ -36,6 +40,7 @@
     "@eslint/js": "^10.0.1",
     "@eslint/json": "^1.1.0",
     "@types/node": "^25.4.0",
+    "cross-env": "^10.1.0",
     "eslint": "^10.0.3",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.4.0",
